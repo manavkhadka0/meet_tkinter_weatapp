@@ -4,7 +4,7 @@ import requests
 import json
 
 # api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
-APPID = "c2ccfd9d1c994c584962e12bbafbf022"
+APPID = "" #YOUR API KEY
 
 def write_into_file(data):
     with open('data.json','w') as file:
