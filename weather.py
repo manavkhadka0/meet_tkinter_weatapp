@@ -3,6 +3,7 @@ import tkinter as tk
 import requests
 from PIL import Image,ImageTk
 import json
+from io import BytesIO
 import datetime
 
 # api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
@@ -23,6 +24,14 @@ def getWeather(window):
 
     # take data from the response
     try:
+        # incons Api
+        icons_url = f"http://openweathermap.org/img/wn/{response_data['weather'][0]['icon']}@2x.png"
+        icon_response = requests.get(icons_url)
+        icon_data = icon_response.content
+        icon_image = ImageTk.PhotoImage(Image.open(BytesIO(icon_data)))
+
+
+
         condition= response_data['weather'][0]['main']
 
         # Changing background Image, Image lai read gareko
@@ -47,6 +56,8 @@ def getWeather(window):
         # image lai haleko
         label3.configure(image=bg_image)
         label3.image = (bg_image)
+        icons_label.configure(image=icon_image)
+        icons_label.image = (icon_image)
     except KeyError:
         label1.config(text= response_data['message'])
         label2.config(text = response_data['cod'])
@@ -86,6 +97,9 @@ button = tk.Button(window,text="Get Weather")
 button.pack()
 button.bind('<Button>',getWeather)
 
+
+icons_label = tk.Label(window,bg='#afafaf')
+icons_label.pack()
 label1 = tk.Label(window,bg='#afafaf',font=('poppins',20,'italic'))
 label1.pack()
 label2 = tk.Label(window,bg='#afafaf',font=('poppins',20,'italic'))
